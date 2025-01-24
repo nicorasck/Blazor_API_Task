@@ -9,7 +9,7 @@ namespace Blazor_API_Task.Models
         public string? country_prefix {get; set;}
         public string? country_code {get; set;}
         public string? country_name {get; set;}
-        public string? location {get; set;}
+        // public string? location {get; set;}
         public string? carrier {get; set;}
         public string? line_type {get; set;}
     }

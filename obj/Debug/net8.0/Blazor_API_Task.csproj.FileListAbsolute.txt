@@ -1029,3 +1029,4 @@ C:\Users\nicho\development\projects\OPF\Blazor\Blazor_API_Task\obj\Debug\net8.0\
 C:\Users\nicho\development\projects\OPF\Blazor\Blazor_API_Task\obj\Debug\net8.0\compressed\k7gjw7q4xv.gz
 C:\Users\nicho\development\projects\OPF\Blazor\Blazor_API_Task\obj\Debug\net8.0\compressed\2a9mis66ol.gz
 C:\Users\nicho\development\projects\OPF\Blazor\Blazor_API_Task\obj\Debug\net8.0\compressed\51ituon0s2.gz
+C:\Users\nicho\development\projects\OPF\Blazor\Blazor_API_Task\obj\Debug\net8.0\Blazor_API_Task.sourcelink.json

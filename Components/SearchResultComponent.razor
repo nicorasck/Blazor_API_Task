@@ -1,4 +1,3 @@
-@* This is a child component used by NumberValidationComponent *@
 @page "/Search"
 @inject GlobalService GlobalService
 
@@ -11,19 +10,20 @@
     <ul class="list-group">
         @foreach (var number in GlobalService.savedNumbers)
         {
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                <li><b>Valid:</b> @number.valid</li>
-                <li><b>Number:</b> @number.number</li>
-                <li><b>International Format:</b> @number.international_format</li>
-                <li><b>Country Prefix</b> @number.country_prefix</li>
-                <li><b>Country Code:</b> @number.country_code</li>
-                <li><b>Country Name:</b> @number.country_name</li>
-                <li><b>Location:</b> @number.location</li>
-                <li><b>Carrier:</b> @number.carrier</li>
-                <li><b>Line Type:</b> @number.line_type</li>
-                    @* Button to delete the specific saved number *@
-                    @* <button type="button" class="btn btn-outline-light" @onclick="() => DeleteNumber(number)">Delete</button> *@
-                </li>
+            <li class="list-group-item">
+            @* <li class="list-group-item d-flex justify-content-between align-items-center"> *@ @*this will present in a line*@
+                <div><b>Valid:</b> @number.valid</div>
+                <div><b>Number:</b> @number.number</div>
+                <div><b>International Format:</b> @number.international_format</div>
+                <div><b>Country Prefix:</b> @number.country_prefix</div>
+                <div><b>Country Code:</b> @number.country_code</div>
+                <div><b>Country Name:</b> @number.country_name</div>
+                @* <div><b>Location:</b> @number.location</div> *@
+                <div><b>Carrier:</b> @number.carrier</div>
+                <div><b>Line Type:</b> @number.line_type</div>
+                @* Button to delete the specific saved number *@
+                @* <button type="button" class="btn btn-outline-light" @onclick="() => DeleteNumber(number)">Delete</button> *@
+            </li>   
         }
     </ul>
 

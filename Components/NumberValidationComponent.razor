@@ -1,4 +1,4 @@
-@* This is the Main Component: *NumberValidationComponent' *@
+@* This is the Main/Parent Component: *NumberValidationComponent' *@
 
 @inject NumberValidationApiService NumberValidationApiService;
 @inject HttpClient Http
@@ -9,7 +9,7 @@
 <div class="input-group placeholder-box">
     <input type="text" class="form-control" @bind="Number" placeholder="Enter a phone number" style="width: auto;;"/>
     <button class="btn btn-outline-secondary" type="button" @onclick="ValidateNumber">Validate</button>
-    <button class="btn btn-outline-secondary" type="button" @onclick="Search">Save Result</button>   
+    <button class="btn btn-outline-secondary" type="button" @onclick="Search">Save Result</button>
 </div>
 
 @if (numberValidationData == null && string.IsNullOrWhiteSpace(errorMessage))
@@ -28,7 +28,7 @@ else if (numberValidationData != null)
                 <li><b>Country Prefix</b> @numberValidationData.country_prefix</li>
                 <li><b>Country Code:</b> @numberValidationData.country_code</li>
                 <li><b>Country Name:</b> @numberValidationData.country_name</li>
-                <li><b>Location:</b> @numberValidationData.location</li>
+                @* <li><b>Location:</b> @numberValidationData.location</li> *@
                 <li><b>Carrier:</b> @numberValidationData.carrier</li>
                 <li><b>Line Type:</b> @numberValidationData.line_type</li>
             </ul>
@@ -36,15 +36,15 @@ else if (numberValidationData != null)
     </div>
 }
 
-<div style="width: 35rem; padding-top: 5px";>
+@* <div style="width: 35rem; padding-top: 5px";>
     <div style="border: 2px solid blue;">
         <SearchResultComponent SavedNumbers="savedNumbers" />
     </div>
-</div>
+</div> *@
 
 @code {
     public NumberValidationData? numberValidationData;  // Validation API result
-    public string Number;
+    public string Number = "";
     public string? errorMessage;
     public List<NumberValidationData> saveNumber = new List<NumberValidationData>();
     
@@ -99,7 +99,7 @@ else if (numberValidationData != null)
                 country_prefix = numberValidationData.country_prefix,
                 country_code = numberValidationData.country_code,
                 country_name = numberValidationData.country_name,
-                location = numberValidationData.location,
+                /*location = numberValidationData.location,*/
                 carrier = numberValidationData.carrier,
                 line_type = numberValidationData.line_type,
             };
