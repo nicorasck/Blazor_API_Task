@@ -1,0 +1,45 @@
+@* This is a child component used by NumberValidationComponent *@
+@page "/Search"
+@inject GlobalService GlobalService
+
+
+
+<h4>Saved Numbers</h4>
+
+@if (GlobalService.savedNumbers.Count > 0)
+{
+    <ul class="list-group">
+        @foreach (var number in GlobalService.savedNumbers)
+        {
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                <li><b>Valid:</b> @number.valid</li>
+                <li><b>Number:</b> @number.number</li>
+                <li><b>International Format:</b> @number.international_format</li>
+                <li><b>Country Prefix</b> @number.country_prefix</li>
+                <li><b>Country Code:</b> @number.country_code</li>
+                <li><b>Country Name:</b> @number.country_name</li>
+                <li><b>Location:</b> @number.location</li>
+                <li><b>Carrier:</b> @number.carrier</li>
+                <li><b>Line Type:</b> @number.line_type</li>
+                    @* Button to delete the specific saved number *@
+                    @* <button type="button" class="btn btn-outline-light" @onclick="() => DeleteNumber(number)">Delete</button> *@
+                </li>
+        }
+    </ul>
+
+}
+else
+{
+    <p>No saved searches yet.</p>
+}
+
+@code {
+    /*public List<NumberValidationData> SavedNumbers { get; set; } = new();
+    private void DeleteNumber(NumberValidationData number)
+    {
+        SavedNumbers.Remove(number);
+
+        // Notifies the parent component of the change in the list
+        StateHasChanged();
+        }*/
+}

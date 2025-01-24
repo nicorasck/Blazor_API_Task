@@ -1,0 +1,116 @@
+@* This is the Main Component: *NumberValidationComponent' *@
+
+@inject NumberValidationApiService NumberValidationApiService;
+@inject HttpClient Http
+@inject GlobalService GlobalService
+
+
+<h3>Number Validation</h3>
+<div class="input-group placeholder-box">
+    <input type="text" class="form-control" @bind="Number" placeholder="Enter a phone number" style="width: auto;;"/>
+    <button class="btn btn-outline-secondary" type="button" @onclick="ValidateNumber">Validate</button>
+    <button class="btn btn-outline-secondary" type="button" @onclick="Search">Save Result</button>   
+</div>
+
+@if (numberValidationData == null && string.IsNullOrWhiteSpace(errorMessage))
+{
+    <p>Still no data. Please Enter a phone number and then press "Validate"</p>
+}
+else if (numberValidationData != null)
+{
+    <div class="card" style="width: 35rem; padding-top: 5px;">
+        <div class="card-body" style="border: 2px solid blue;">
+            <h5 class="card-title" style="font-weight: bold;">Validation Result</h5>
+            <ul class="=card-list">
+                <li><b>Valid:</b> @numberValidationData.valid</li>
+                <li><b>Number:</b> @numberValidationData.number</li>
+                <li><b>International Format:</b> @numberValidationData.international_format</li>
+                <li><b>Country Prefix</b> @numberValidationData.country_prefix</li>
+                <li><b>Country Code:</b> @numberValidationData.country_code</li>
+                <li><b>Country Name:</b> @numberValidationData.country_name</li>
+                <li><b>Location:</b> @numberValidationData.location</li>
+                <li><b>Carrier:</b> @numberValidationData.carrier</li>
+                <li><b>Line Type:</b> @numberValidationData.line_type</li>
+            </ul>
+        </div>
+    </div>
+}
+
+<div style="width: 35rem; padding-top: 5px";>
+    <div style="border: 2px solid blue;">
+        <SearchResultComponent SavedNumbers="savedNumbers" />
+    </div>
+</div>
+
+@code {
+    public NumberValidationData? numberValidationData;  // Validation API result
+    public string Number;
+    public string? errorMessage;
+    public List<NumberValidationData> saveNumber = new List<NumberValidationData>();
+    
+    public async Task ValidateNumber()
+    {   // Resetting the error messages and number validation data each time the user choose to 'validate'
+        errorMessage = null;
+        numberValidationData = null;
+
+        // Checking if the entered digits of the Number does not contain any empty spaces.
+        if (string.IsNullOrWhiteSpace(Number))
+        {
+            errorMessage = "Please enter a phone number.";
+            return;
+        }
+        // Bringing the API Key from API-Service.
+        string apiKey = NumberValidationApiService.GetApiKey();
+
+        // Construct the API URL
+        string url = $"https://apilayer.net/api/validate?access_key={apiKey}&number={Number}&country_code=&format=1";
+        
+        // Error handling 
+        try
+        {
+            numberValidationData = await Http.GetFromJsonAsync<NumberValidationData>(url);
+
+            if (numberValidationData != null)
+            {   
+                Search();         
+            }
+        }
+        // Notify the user an error message for inserted classes like Exception and HttpRequestExceptions.
+        catch (HttpRequestException ex)
+        {
+            errorMessage = "Network error.\n";
+            Console.WriteLine(ex);
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"An unexpected error occurred: \n{ex.Message}";
+        }
+    }
+    public void Search()
+    {
+        if (numberValidationData != null)
+        {
+            var newNumberList = new NumberValidationData
+            {
+                valid = numberValidationData.valid,
+                number = numberValidationData.number,
+                local_format = numberValidationData.local_format,
+                international_format = numberValidationData.international_format,
+                country_prefix = numberValidationData.country_prefix,
+                country_code = numberValidationData.country_code,
+                country_name = numberValidationData.country_name,
+                location = numberValidationData.location,
+                carrier = numberValidationData.carrier,
+                line_type = numberValidationData.line_type,
+            };
+
+            GlobalService.AddNumber(newNumberList);
+            Number = string.Empty;
+        }
+        else
+        {
+            Console.WriteLine("No validated number to save.");
+        }
+    }
+}
+

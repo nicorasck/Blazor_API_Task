@@ -1,0 +1,9 @@
+        // Construct the API URL
+        string url = $"https://apilayer.net/api/validate?access_key={apiKey}&number={Number}&country_code=&format=1";
+
+        // Bringing the API Key from API-Service.
+        string apiKey = NumberValidationApiService.GetApiKey();
+        // Binds the URL so the all necessary data will be added.
+        string url = $"https://apilayer.net/api/validate?access_key={apiKey}&number={Number}&country_code=&format=1";
+        /*string url = $"https://apilayer.net/api/validate?access_key=b6d7b94c3a42f253934ee08e59863963&number=14158586273&country_code=&format=1";*/
+    
