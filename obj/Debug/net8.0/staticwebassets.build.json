@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "na9doGPO/l0y5O81kqLrFmYvaabgoPNycvjYLhrqH+E=",
+  "Hash": "ArCAX6hn/ZpIiNzj0D+K/rPEUp3EWhM1VBAGzD08FNk=",
   "Source": "Blazor_API_Task",
   "BasePath": "/",
   "Mode": "Root",
@@ -7919,6 +7919,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\icon-192.png"
+    },
+    {
+      "Identity": "C:\\Users\\nicho\\development\\projects\\OPF\\Blazor\\Blazor_API_Task\\wwwroot\\images\\Pink_Wallpaper.jpg",
+      "SourceId": "Blazor_API_Task",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\nicho\\development\\projects\\OPF\\Blazor\\Blazor_API_Task\\wwwroot\\",
+      "BasePath": "/",
+      "RelativePath": "images/Pink_Wallpaper.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\Pink_Wallpaper.jpg"
     },
     {
       "Identity": "C:\\Users\\nicho\\development\\projects\\OPF\\Blazor\\Blazor_API_Task\\wwwroot\\images\\Ponyo_Japan_Poster.jpg",

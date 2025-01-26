@@ -14,4 +14,9 @@ namespace Blazor_API_Task.Models
         public string? line_type {get; set;}
     }
 
+    // public class FavoriteNumberValidationData
+    // {
+    //     // Suggestion
+    // }
+
 }

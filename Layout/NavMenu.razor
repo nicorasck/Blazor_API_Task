@@ -1,47 +1,31 @@
-﻿@* <div class="top-row ps-3 navbar navbar-dark">
+﻿<div class="top-row navbar navbar-dark navbar-nico">
     <div class="container-fluid">
-        <a class="navbar-brand" href="">Blazor API Task</a>
+        <a class="navbar-brand">Blazor API Task</a>
         <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
             <span class="navbar-toggler-icon"></span>
         </button>
     </div>
 </div>
 
-<div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
-    <nav class="flex-column">
-        <div class="nav-item px-3">
+<div class="nav-menu">
+    <ul>
+        <li>
             <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
                 <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
-            </NavLink> *@
-            @* </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Counter
             </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="weather">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Weather
+        </li>
+        <li>
+            <NavLink class="nav-link" href="NumberValidation">
+                <span class="bi bi-telephone" aria-hidden="true"></span> Number Validation
             </NavLink>
-        </div> *@
-
-<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <p>Blazor API Task</p>
-    </div>
-</div>
-           
-                <NavLink class="nav-link" href="NumberValidation">
-                    <span class="bi bi-telephone" aria-hidden="true"></span> Number Validation
-                </NavLink>
-          
+        </li>
+        <li>
             <NavLink class="nav-link" href="Search">
                 <span class="bi bi-telephone" aria-hidden="true"></span> Number history
             </NavLink>
-     
-        @* </div>
-    </nav>
-</div> *@
+        </li>
+    </ul>
+</div>
 
 @code {
     private bool collapseNavMenu = true;

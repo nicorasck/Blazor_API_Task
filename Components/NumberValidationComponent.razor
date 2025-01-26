@@ -3,24 +3,29 @@
 @inject NumberValidationApiService NumberValidationApiService;
 @inject HttpClient Http
 @inject GlobalService GlobalService
+@* @inject IJSRuntime JSRuntime /*for localStorage interaction*/ *@
 
 
-<h3>Number Validation</h3>
+<h3 style="text-align: center;">Number Validation</h3>
 <div class="input-group placeholder-box">
-    <input type="text" class="form-control" @bind="Number" placeholder="Enter a phone number" style="width: auto;;"/>
+    <input type="text" class="form-control" @bind="Number" placeholder="Enter a phone number" />
     <button class="btn btn-outline-secondary" type="button" @onclick="ValidateNumber">Validate</button>
-    <button class="btn btn-outline-secondary" type="button" @onclick="Search">Save Result</button>
+    <button class="btn btn-outline-secondary" type="button" @onclick="SaveNumber">Save Result</button>
 </div>
 
 @if (numberValidationData == null && string.IsNullOrWhiteSpace(errorMessage))
 {
-    <p>Still no data. Please Enter a phone number and then press "Validate"</p>
+    <div style="text-align: center;">
+        <p>Still no data. Please Enter a phone number and then press "Validate"</p>
+    </div>
 }
 else if (numberValidationData != null)
 {
-    <div class="card" style="width: 35rem; padding-top: 5px;">
-        <div class="card-body" style="border: 2px solid blue;">
-            <h5 class="card-title" style="font-weight: bold;">Validation Result</h5>
+    <div class="card text-center">
+        <div class="card-header">
+            <h5 style="font-weight: bold;">Validation Result</h5>
+        </div>
+        <div class="card-body">
             <ul class="=card-list">
                 <li><b>Valid:</b> @numberValidationData.valid</li>
                 <li><b>Number:</b> @numberValidationData.number</li>
@@ -32,24 +37,34 @@ else if (numberValidationData != null)
                 <li><b>Carrier:</b> @numberValidationData.carrier</li>
                 <li><b>Line Type:</b> @numberValidationData.line_type</li>
             </ul>
+            
+            <a href="https://www.google.com/" class="btn btn-primary">Google</a>
+        </div>
+        <div class="card-footer text-body-secondary">
+            Your Welcome.
         </div>
     </div>
 }
 
-@* <div style="width: 35rem; padding-top: 5px";>
-    <div style="border: 2px solid blue;">
-        <SearchResultComponent SavedNumbers="savedNumbers" />
-    </div>
-</div> *@
+@* <button class="btn btn-outline-secondary" type="button" @onclick="SaveNumber">Save Result</button>
+@if (GlobalService.savedNumbers != null)
+{
+    <SearchResultComponent />
+}
+else
+{
+    <p>No numbers yet.</p>
+} *@
+
 
 @code {
-    public NumberValidationData? numberValidationData;  // Validation API result
+    public NumberValidationData? numberValidationData; // Validation API result
     public string Number = "";
     public string? errorMessage;
-    public List<NumberValidationData> saveNumber = new List<NumberValidationData>();
-    
+    /*public List<NumberValidationData> saveNumber = new List<NumberValidationData>();*/
+
     public async Task ValidateNumber()
-    {   // Resetting the error messages and number validation data each time the user choose to 'validate'
+    { // Resetting the error messages and number validation data each time the user choose to 'validate'
         errorMessage = null;
         numberValidationData = null;
 
@@ -64,15 +79,15 @@ else if (numberValidationData != null)
 
         // Construct the API URL
         string url = $"https://apilayer.net/api/validate?access_key={apiKey}&number={Number}&country_code=&format=1";
-        
-        // Error handling 
+
+        // Error handling
         try
         {
             numberValidationData = await Http.GetFromJsonAsync<NumberValidationData>(url);
 
             if (numberValidationData != null)
-            {   
-                Search();         
+            {
+                SaveNumber();
             }
         }
         // Notify the user an error message for inserted classes like Exception and HttpRequestExceptions.
@@ -86,23 +101,31 @@ else if (numberValidationData != null)
             errorMessage = $"An unexpected error occurred: \n{ex.Message}";
         }
     }
-    public void Search()
+
+    /// <summary>
+    /// To interact with the local storage an implementation needs to be done
+    /// by using 'inject IJSRuntime JSRuntime' => a dependency injection.
+    /// To load saved data from local storage you need to add OnInitializedAsync() .
+    /// The code down below does ont implement OnInitializedAsync()!
+    /// </summary>
+
+    public void SaveNumber()
     {
         if (numberValidationData != null)
         {
             var newNumberList = new NumberValidationData
-            {
-                valid = numberValidationData.valid,
-                number = numberValidationData.number,
-                local_format = numberValidationData.local_format,
-                international_format = numberValidationData.international_format,
-                country_prefix = numberValidationData.country_prefix,
-                country_code = numberValidationData.country_code,
-                country_name = numberValidationData.country_name,
+                {
+                    valid = numberValidationData.valid,
+                    number = numberValidationData.number,
+                    local_format = numberValidationData.local_format,
+                    international_format = numberValidationData.international_format,
+                    country_prefix = numberValidationData.country_prefix,
+                    country_code = numberValidationData.country_code,
+                    country_name = numberValidationData.country_name,
                 /*location = numberValidationData.location,*/
-                carrier = numberValidationData.carrier,
-                line_type = numberValidationData.line_type,
-            };
+                    carrier = numberValidationData.carrier,
+                    line_type = numberValidationData.line_type,
+                };
 
             GlobalService.AddNumber(newNumberList);
             Number = string.Empty;
@@ -113,4 +136,3 @@ else if (numberValidationData != null)
         }
     }
 }
-

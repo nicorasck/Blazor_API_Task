@@ -7,3 +7,33 @@
         string url = $"https://apilayer.net/api/validate?access_key={apiKey}&number={Number}&country_code=&format=1";
         /*string url = $"https://apilayer.net/api/validate?access_key=b6d7b94c3a42f253934ee08e59863963&number=14158586273&country_code=&format=1";*/
     
+
+
+    ------ NumberValidationComponent
+
+        public void SaveNumber()
+    {
+        if (numberValidationData != null)
+        {
+            var newNumberList = new NumberValidationData
+            {
+                valid = numberValidationData.valid,
+                number = numberValidationData.number,
+                local_format = numberValidationData.local_format,
+                international_format = numberValidationData.international_format,
+                country_prefix = numberValidationData.country_prefix,
+                country_code = numberValidationData.country_code,
+                country_name = numberValidationData.country_name,
+                /*location = numberValidationData.location,*/
+                carrier = numberValidationData.carrier,
+                line_type = numberValidationData.line_type,
+            };
+
+            GlobalService.AddNumber(newNumberList);
+            Number = string.Empty;
+        }
+        else
+        {
+            Console.WriteLine("No validated number to save.");
+        }
+    }

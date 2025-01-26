@@ -37,6 +37,10 @@
       "PackagePath": "staticwebassets\\icon-192.png"
     },
     {
+      "Id": "C:\\Users\\nicho\\development\\projects\\OPF\\Blazor\\Blazor_API_Task\\wwwroot\\images\\Pink_Wallpaper.jpg",
+      "PackagePath": "staticwebassets\\images\\Pink_Wallpaper.jpg"
+    },
+    {
       "Id": "C:\\Users\\nicho\\development\\projects\\OPF\\Blazor\\Blazor_API_Task\\wwwroot\\images\\Ponyo_Japan_Poster.jpg",
       "PackagePath": "staticwebassets\\images\\Ponyo_Japan_Poster.jpg"
     },
