@@ -3,6 +3,7 @@
     padding: 0;
     font-family: sans-serif;
     scroll-behavior: smooth;
+    box-sizing: border-box;
 }
  
  
@@ -117,24 +118,25 @@ code {
 .home-page {
     position: sticky;
     height: 100vh; 
-    width: 100%;
-    border: solid 2px pink;
+    width: 100%; /* Inherit the width of .page */
+    border: solid 2px rgb(247, 47, 150);
     overflow: hidden;
+    box-sizing: border-box;
 }
 
     .home-page::before {
         content: "";
-        position:relative;
+        position: absolute;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
-        background-image: url("../images/ponyo-home-page.jpg");
+        background-image: url('/images/ponyo-home-page.jpg');
         background-attachment: scroll; 
         background-size: cover;
         background-position: center;
         opacity: 0.2; 
-        z-index: 1;
+        z-index: -1; /* Prevent overlap with content */
     }
 
         .title-text-home, 
@@ -233,6 +235,13 @@ code {
 }
 
 .placeholder-box {
-    width: 40%;
+    width: 50%;
     margin: auto;
+}
+
+.card-wrap-number {
+    max-width: 200px;
+    margin: 0 auto; /* Center it horizontally */
+    padding: 0 16px;
+    box-sizing: border-box; 
 }

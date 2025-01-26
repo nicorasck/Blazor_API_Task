@@ -6,7 +6,7 @@
 @* @inject IJSRuntime JSRuntime /*for localStorage interaction*/ *@
 
 
-<h3 style="text-align: center;">Number Validation</h3>
+<h3 style="text-align: center; margin-top: 20px;">Number Validation</h3>
 <div class="input-group placeholder-box">
     <input type="text" class="form-control" @bind="Number" placeholder="Enter a phone number" />
     <button class="btn btn-outline-secondary" type="button" @onclick="ValidateNumber">Validate</button>
@@ -26,7 +26,7 @@ else if (numberValidationData != null)
             <h5 style="font-weight: bold;">Validation Result</h5>
         </div>
         <div class="card-body">
-            <ul class="=card-list">
+            <ul class="=card-list" style="list-style-type: none;">
                 <li><b>Valid:</b> @numberValidationData.valid</li>
                 <li><b>Number:</b> @numberValidationData.number</li>
                 <li><b>International Format:</b> @numberValidationData.international_format</li>
@@ -37,11 +37,10 @@ else if (numberValidationData != null)
                 <li><b>Carrier:</b> @numberValidationData.carrier</li>
                 <li><b>Line Type:</b> @numberValidationData.line_type</li>
             </ul>
-            
             <a href="https://www.google.com/" class="btn btn-primary">Google</a>
         </div>
         <div class="card-footer text-body-secondary">
-            Your Welcome.
+            De nada.
         </div>
     </div>
 }
