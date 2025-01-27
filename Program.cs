@@ -15,9 +15,15 @@ public class Program
         builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
         var NumberValidationApiKey = builder.Configuration["NumberValidationApiKey"];
-        builder.Services.AddSingleton(new NumberValidationApiService(NumberValidationApiKey));
+
+        // These exists in GlobalService.cs
         builder.Services.AddSingleton<GlobalService>();
 
+        builder.Services.AddSingleton(new NumberValidationApiService(NumberValidationApiKey)); // A global service
+        builder.Services.AddSingleton(new NumberService());
+        // Singleton is creating an instance from a class.
+
+        var ExchangeratesApiKey = builder.Configuration["ExchangeratesApiKey"];
 
         await builder.Build().RunAsync();
     }

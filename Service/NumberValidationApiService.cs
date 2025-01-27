@@ -13,3 +13,16 @@ public class NumberValidationApiService
     }
 }
 
+public class ExchangeratesApiKeyService
+{
+    public readonly string _apiKeyExchangerates;
+        public ExchangeratesApiKeyService(string ExchangeratesApiKey)
+    {
+        _apiKeyExchangerates = ExchangeratesApiKey;
+    }
+    public string GetApiKey()
+    {
+        return _apiKeyExchangerates;
+    }
+}
+

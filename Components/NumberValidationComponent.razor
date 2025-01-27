@@ -10,8 +10,9 @@
 <div class="input-group placeholder-box">
     <input type="text" class="form-control" @bind="Number" placeholder="Enter a phone number" />
     <button class="btn btn-outline-secondary" type="button" @onclick="ValidateNumber">Validate</button>
-    <button class="btn btn-outline-secondary" type="button" @onclick="SaveNumber">Save Result</button>
+    @* <button class="btn btn-outline-secondary" type="button" @onclick="SaveNumber">Save Result</button> *@
 </div>
+<div style="padding: 10px;"></div>
 
 @if (numberValidationData == null && string.IsNullOrWhiteSpace(errorMessage))
 {
@@ -37,67 +38,65 @@ else if (numberValidationData != null)
                 <li><b>Carrier:</b> @numberValidationData.carrier</li>
                 <li><b>Line Type:</b> @numberValidationData.line_type</li>
             </ul>
-            <a href="https://www.google.com/" class="btn btn-primary">Google</a>
+                <button class="btn btn-outline-secondary" type="button" @onclick="SaveNumber">Save Result</button>
+            @* <a href="https://www.google.com/" class="btn btn-primary">Google</a> *@
         </div>
         <div class="card-footer text-body-secondary">
-            De nada.
+            Searched at: @DateTime.Now.ToString("f")
         </div>
     </div>
 }
 
-@* <button class="btn btn-outline-secondary" type="button" @onclick="SaveNumber">Save Result</button>
-@if (GlobalService.savedNumbers != null)
-{
-    <SearchResultComponent />
-}
-else
-{
-    <p>No numbers yet.</p>
-} *@
 
 
 @code {
+
     public NumberValidationData? numberValidationData; // Validation API result
     public string Number = "";
     public string? errorMessage;
-    /*public List<NumberValidationData> saveNumber = new List<NumberValidationData>();*/
+    private bool useMockData = true; // Set this to `true` for testing, `false` for live API calls
 
     public async Task ValidateNumber()
-    { // Resetting the error messages and number validation data each time the user choose to 'validate'
+    {
         errorMessage = null;
         numberValidationData = null;
 
-        // Checking if the entered digits of the Number does not contain any empty spaces.
         if (string.IsNullOrWhiteSpace(Number))
         {
             errorMessage = "Please enter a phone number.";
             return;
         }
-        // Bringing the API Key from API-Service.
-        string apiKey = NumberValidationApiService.GetApiKey();
 
-        // Construct the API URL
-        string url = $"https://apilayer.net/api/validate?access_key={apiKey}&number={Number}&country_code=&format=1";
-
-        // Error handling
-        try
+        if (useMockData) // testing code
         {
-            numberValidationData = await Http.GetFromJsonAsync<NumberValidationData>(url);
+            // Use mock data for testing
+            numberValidationData = MockData.GetMockNumberValidationData();
+            //SaveNumber(); // Automatically save the mock data
+        }
+        else
+        {
+            // Live API logic
+            string apiKey = NumberValidationApiService.GetApiKey();
+            string url = $"https://apilayer.net/api/validate?access_key={apiKey}&number={Number}&country_code=&format=1";
 
-            if (numberValidationData != null)
+            try
             {
-                SaveNumber();
+                numberValidationData = await Http.GetFromJsonAsync<NumberValidationData>(url);
+
+                /*if (numberValidationData != null)
+                {
+                    SaveNumber();
+                }*/
             }
-        }
-        // Notify the user an error message for inserted classes like Exception and HttpRequestExceptions.
-        catch (HttpRequestException ex)
-        {
-            errorMessage = "Network error.\n";
-            Console.WriteLine(ex);
-        }
-        catch (Exception ex)
-        {
-            errorMessage = $"An unexpected error occurred: \n{ex.Message}";
+            catch (HttpRequestException ex)
+            {
+                errorMessage = "Network error.";
+                Console.WriteLine(ex);
+            }
+            catch (Exception ex)
+            {
+                errorMessage = $"An unexpected error occurred: {ex.Message}";
+            }
         }
     }
 
@@ -105,14 +104,15 @@ else
     /// To interact with the local storage an implementation needs to be done
     /// by using 'inject IJSRuntime JSRuntime' => a dependency injection.
     /// To load saved data from local storage you need to add OnInitializedAsync() .
-    /// The code down below does ont implement OnInitializedAsync()!
+    /// The code down below does not implement OnInitializedAsync()!
     /// </summary>
-
     public void SaveNumber()
     {
         if (numberValidationData != null)
         {
-            var newNumberList = new NumberValidationData
+            Console.WriteLine($"Saving number: {numberValidationData.number}");
+            // Create a new instance of NumberValidationData for saving
+            var newNumber = new NumberValidationData
                 {
                     valid = numberValidationData.valid,
                     number = numberValidationData.number,
@@ -121,17 +121,25 @@ else
                     country_prefix = numberValidationData.country_prefix,
                     country_code = numberValidationData.country_code,
                     country_name = numberValidationData.country_name,
-                /*location = numberValidationData.location,*/
                     carrier = numberValidationData.carrier,
-                    line_type = numberValidationData.line_type,
+                    line_type = numberValidationData.line_type
                 };
 
-            GlobalService.AddNumber(newNumberList);
+            // Add to the global service
+            GlobalService.AddNumber(newNumber);
+
+            // Optional: Clear the input field for the next entry
             Number = string.Empty;
+
+            Console.WriteLine("Number saved successfully.");
+
+            StateHasChanged();
         }
         else
         {
-            Console.WriteLine("No validated number to save.");
+            Console.WriteLine("No validated number available to save.");
         }
     }
+
+
 }
