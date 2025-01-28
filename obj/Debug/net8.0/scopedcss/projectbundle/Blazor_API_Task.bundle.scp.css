@@ -93,6 +93,10 @@ main[b-agydrqw7eq] {
     }
 }
 /* /Layout/NavMenu.razor.rz.scp.css */
+#marquee[b-ol4cyz6i25] {
+    color: yellow;
+}
+
 .navbar-toggler[b-ol4cyz6i25] {
     background-color: pink;
 }
