@@ -4,6 +4,7 @@ namespace Blazor_API_Task.Models
 {
     public class NumberValidationData // 'Data' from API => NumVerify
     {
+        public bool IsFavorite {get; set;}
         public bool valid {get; set;}
         public string? number {get; set;}
         public string? local_format {get; set;}
@@ -16,12 +17,6 @@ namespace Blazor_API_Task.Models
         public string? line_type {get; set;}
     } 
 
-}
-
-public class NumberModelFavorite
-{
-    public NumberValidationData _NumberModel {get; set;}
-    public bool _IsFavorite {get; set;}
 }
 
 /// <summary>

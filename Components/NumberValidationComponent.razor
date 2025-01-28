@@ -39,7 +39,6 @@ else if (numberValidationData != null)
                 <li><b>Line Type:</b> @numberValidationData.line_type</li>
             </ul>
                 <button class="btn btn-outline-secondary" type="button" @onclick="SaveNumber">Save Result</button>
-            @* <a href="https://www.google.com/" class="btn btn-primary">Google</a> *@
         </div>
         <div class="card-footer text-body-secondary">
             Searched at: @DateTime.Now.ToString("f")
@@ -54,7 +53,7 @@ else if (numberValidationData != null)
     public NumberValidationData? numberValidationData; // Validation API result
     public string Number = "";
     public string? errorMessage;
-    private bool useMockData = true; // Set this to `true` for testing, `false` for live API calls
+    private bool useMockData = true; // Set this to `true` for testing, `false` for API calls
 
     public async Task ValidateNumber()
     {
@@ -75,19 +74,16 @@ else if (numberValidationData != null)
         }
         else
         {
-            // Live API logic
+            // API logic
             string apiKey = NumberValidationApiService.GetApiKey();
+            // Bringing the api key and then the entered number from the user
             string url = $"https://apilayer.net/api/validate?access_key={apiKey}&number={Number}&country_code=&format=1";
 
             try
-            {
+            {   // Checking the number the API has provided
                 numberValidationData = await Http.GetFromJsonAsync<NumberValidationData>(url);
-
-                /*if (numberValidationData != null)
-                {
-                    SaveNumber();
-                }*/
             }
+                // Error handling (this message will not be displayed, yet bc the code is lacking atm)
             catch (HttpRequestException ex)
             {
                 errorMessage = "Network error.";
@@ -110,7 +106,6 @@ else if (numberValidationData != null)
     {
         if (numberValidationData != null)
         {
-            Console.WriteLine($"Saving number: {numberValidationData.number}");
             // Create a new instance of NumberValidationData for saving
             var newNumber = new NumberValidationData
                 {
@@ -127,11 +122,8 @@ else if (numberValidationData != null)
 
             // Add to the global service
             GlobalService.AddNumber(newNumber);
-
             // Optional: Clear the input field for the next entry
             Number = string.Empty;
-
-            Console.WriteLine("Number saved successfully.");
 
             StateHasChanged();
         }
@@ -140,6 +132,4 @@ else if (numberValidationData != null)
             Console.WriteLine("No validated number available to save.");
         }
     }
-
-
 }

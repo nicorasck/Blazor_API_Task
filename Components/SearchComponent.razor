@@ -1,67 +1,65 @@
-@inject NumberService numberService
 @inject GlobalService GlobalService
-@inject SearchComponent SearchComponent
 
 <div class="home-page">
 
-    @if (GlobalService.SavedNumbers != null && GlobalService.SavedNumbers.Any())
-    {
-        <h3 style="text-align: center; margin-top: 20px;">Number History</h3>
-        @foreach (var number in GlobalService.SavedNumbers)
+    <div class="history-card">
+        @if (GlobalService.SavedNumbers != null && GlobalService.SavedNumbers.Any())
         {
-            <div class="card text-center my-3">
-                <div class="card-header">
-                    <h5 style="font-weight: bold;">Saved Number</h5>
-                </div>
-                <div class="card-body">
-                    <ul class="list-unstyled">
-                        <li><b>Valid:</b> @(number.valid ? "Yes" : "No")</li>
-                        <li><b>Number:</b> @number.number</li>
-                        <li><b>International Format:</b> @number.international_format</li>
-                        <li><b>Country Prefix:</b> @number.country_prefix</li>
-                        <li><b>Country Code:</b> @number.country_code</li>
-                        <li><b>Country Name:</b> @number.country_name</li>
-                        <li><b>Carrier:</b> @number.carrier</li>
-                        <li><b>Line Type:</b> @number.line_type</li>
-                    </ul>
-                </div>
-                <div class="card-footer text-muted">
-                    Saved at: @DateTime.Now.ToString("f")
-                </div>
-            </div>
-        }
-    }
-    else
-    {
-        <div style="text-align: center; margin-top: 20px;">
-            <h4>No saved searches yet.</h4>
-            <p>Please validate and save a number to see it listed here.</p>
-        </div>
-    }
-</div>
-
-@code {
-    [Parameter]
-    public NumberValidationData? numberValidationData { get; set; }
-
-    public bool ToggleSaved = true;
-
-    public void AddFavorites(NumberValidationData number, bool isFavorite)
-    {
-        if (number != null)
-        {
-            NumberModelFavorite newFavorite = new NumberModelFavorite
+            <h3 style="text-align: center; margin-top: 20px;">Number History</h3>
+            @foreach (var number in GlobalService.SavedNumbers)
             {
-                _NumberModel = number,
-                _IsFavorite = isFavorite
-            };
-
-            numberService.AddFavoriteNumber(newFavorite);
-            Console.WriteLine("Added to favorites.");
+                <div class="card text-center my-3">
+                    <div class="card-header">
+                        <h5 style="font-weight: bold;">Saved Number</h5>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled">
+                            <li><b>Valid:</b> @(number.valid ? "Yes" : "No")</li>
+                            <li><b>Number:</b> @number.number</li>
+                            <li><b>International Format:</b> @number.international_format</li>
+                            <li><b>Country Prefix:</b> @number.country_prefix</li>
+                            <li><b>Country Code:</b> @number.country_code</li>
+                            <li><b>Country Name:</b> @number.country_name</li>
+                            <li><b>Carrier:</b> @number.carrier</li>
+                            <li><b>Line Type:</b> @number.line_type</li>
+                        </ul>
+                    </div>
+                    <div class="card-footer text-muted">
+                        Saved at: @DateTime.Now.ToString("f")
+                        <div>
+                            @if (GlobalService.IsFavorite(number))
+                            {
+                                <button class="btn btn-danger" type="button" @onclick="() => ToggleFavorite(number)">Remove Favorite</button>
+                            }
+                            else
+                            {
+                                <button class="btn btn-success" type="button" @onclick="() => ToggleFavorite(number)">Add as Favorite</button>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
         }
         else
         {
-            Console.WriteLine("No valid number to add to favorites.");
+            <div style="text-align: center; margin-top: 20px;">
+                <h4>No saved searches yet.</h4>
+                <p>Please validate and save a number to see it listed here.</p>
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    private void ToggleFavorite(NumberValidationData number)
+    {
+        if (GlobalService.IsFavorite(number))
+        {
+            GlobalService.RemoveFavoriteNumber(number);
+        }
+        else
+        {
+            GlobalService.AddFavoriteNumber(number);
         }
     }
 }

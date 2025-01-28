@@ -20,7 +20,6 @@ public class Program
         builder.Services.AddSingleton<GlobalService>();
 
         builder.Services.AddSingleton(new NumberValidationApiService(NumberValidationApiKey)); // A global service
-        builder.Services.AddSingleton(new NumberService());
         // Singleton is creating an instance from a class.
 
         var ExchangeratesApiKey = builder.Configuration["ExchangeratesApiKey"];

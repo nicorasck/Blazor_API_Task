@@ -1,9 +1,10 @@
-
 using Blazor_API_Task.Models;
 
 // public class GlobalService
 // {
 //     public List<NumberValidationData> SavedNumbers = new List<NumberValidationData>();
+//     public List<NumberValidationData> ListOfFavorites { get; set; } = new();
+
 //     public void AddNumber(NumberValidationData numberValidationData)
 //     {
 //         // If there are any duplicates using the method .Any()
@@ -11,6 +12,28 @@ using Blazor_API_Task.Models;
 //         {
 //             SavedNumbers.Add(numberValidationData);
 //         }
+//     }
+//     public void AddFavoriteNumber(NumberValidationData number)
+//     {
+//         if (!ListOfFavorites.Contains(number))
+//         {
+//             ListOfFavorites.Add(number);
+//         }
+//     }
+
+//     // Remove a number from favorites
+//     public void RemoveFavoriteNumber(NumberValidationData number)
+//     {
+//         if (ListOfFavorites.Contains(number))
+//         {
+//             ListOfFavorites.Remove(number);
+//         }
+//     }
+
+//     // Check if a number is a favorite
+//     public bool IsFavorite(NumberValidationData number)
+//     {
+//         return ListOfFavorites.Contains(number);
 //     }
 // }
 
@@ -21,29 +44,36 @@ using Blazor_API_Task.Models;
 public class GlobalService
 {
     public List<NumberValidationData> SavedNumbers { get; private set; } = new();
+    public List<NumberValidationData> ListOfFavorites { get; private set; } = new();
 
+    // Add a saved number to the list
     public void AddNumber(NumberValidationData number)
     {
-        Console.WriteLine($"Adding number to GlobalService: {number.number}");
-        SavedNumbers.Add(number);
+        if (!SavedNumbers.Contains(number))
+        {
+            SavedNumbers.Add(number);
+        }
+    }
+    public void AddFavoriteNumber(NumberValidationData number)
+    {
+        if (!ListOfFavorites.Contains(number))
+        {
+            ListOfFavorites.Add(number);
+        }
+    }
+    // Remove a number from favorites
+    public void RemoveFavoriteNumber(NumberValidationData number)
+    {
+        if (ListOfFavorites.Contains(number))
+        {
+            ListOfFavorites.Remove(number);
+        }
+    }
+    // Check if a number is a favorite
+    public bool IsFavorite(NumberValidationData number)
+    {
+        return ListOfFavorites.Contains(number);
     }
 }
 #endregion
 
-
-public class NumberService
-{
-    List<NumberModelFavorite> ListOfFavorites = new List<NumberModelFavorite>();
-
-    public List<NumberModelFavorite> AddFavoriteNumber(NumberModelFavorite number)
-    {
-        ListOfFavorites.Add(number);
-        return ListOfFavorites;
-    }
-
-    public List<NumberModelFavorite> RemoveFavoriteNumber(NumberModelFavorite number)
-    {
-        ListOfFavorites.Remove(number);
-        return ListOfFavorites;
-    }
-}
