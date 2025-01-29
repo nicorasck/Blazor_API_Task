@@ -112,15 +112,12 @@ a, .btn-link {
         content: var(--blazor-load-percentage-text, "Loading");
     }
 
-code {
-    color: #c02d76;
-}
+
 .home-page {
     position: relative;
     height: 100vh; 
     width: 100%; /* Inherit the width of .page */
     overflow: visible;
-    border: solid 2px rgb(247, 47, 150);
     box-sizing: border-box;
 }
 

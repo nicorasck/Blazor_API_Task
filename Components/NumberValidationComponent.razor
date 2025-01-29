@@ -53,7 +53,7 @@ else if (numberValidationData != null)
     public NumberValidationData? numberValidationData; // Validation API result
     public string Number = "";
     public string? errorMessage;
-    private bool useMockData = true; // Set this to `true` for testing, `false` for API calls
+    private bool useMockData = true; // Set this to `true` for testing, `false` for API calls (do not forget to change in GlobalService)
 
     public async Task ValidateNumber()
     {
