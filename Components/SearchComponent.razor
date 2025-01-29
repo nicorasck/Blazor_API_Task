@@ -1,5 +1,7 @@
 @inject GlobalService GlobalService
 
+@* Nico Pico, DO NOT forget to pressent the list of Favorites 'ListOfFavorites'!!! *@
+
 <div class="home-page">
 
     <div class="history-card">
@@ -53,6 +55,7 @@
 @code {
     private void ToggleFavorite(NumberValidationData number)
     {
+        // Bringing the methods from GlobalService via @injection
         if (GlobalService.IsFavorite(number))
         {
             GlobalService.RemoveFavoriteNumber(number);
