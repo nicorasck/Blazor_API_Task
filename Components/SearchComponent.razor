@@ -1,6 +1,9 @@
 @inject GlobalService GlobalService
+@* @inject ChildComponent ChildComponent *@
 
-@* Nico Pico, DO NOT forget to pressent the list of Favorites 'ListOfFavorites'!!! *@
+@* Nico Pico, DO NOT forget to pressent the list of Favorites 'ListOfFavorites'!!! 
+Also testing a child component 'ChildComponent'
+*@
 
 <div class="home-page">
 
@@ -50,12 +53,29 @@
             </div>
         }
     </div>
+
+<button class="btn btn-info" @onclick="ToggleFavoriteNumbers" style="margin: 20px;">Click here to Toggle favorite number</button>
+@if(ShowFavoriteNumbers)
+{
+    foreach (var number in GlobalService.ListOfFavorites)
+    {
+        if(number.IsFavorite)
+        {
+            <CascadingValue Value="number">
+                <ChildComponent OnFavoriteToggle="StateHasChanged"/>
+            </CascadingValue>
+        }
+
+    }
+}
+
+
 </div>
 
 @code {
     private void ToggleFavorite(NumberValidationData number)
     {
-        // Bringing the methods from GlobalService via @injection
+        // Bringing the functions from GlobalService via @injection
         if (GlobalService.IsFavorite(number))
         {
             GlobalService.RemoveFavoriteNumber(number);
@@ -64,5 +84,24 @@
         {
             GlobalService.AddFavoriteNumber(number);
         }
+        StateHasChanged(); // Refreshing the website
+    }
+}
+
+@code {
+    private bool ShowFavoriteNumbers = false;
+
+    // Toggle between showing favorite numbers or all saved numbers
+    private void ToggleFavoriteNumbers()
+    {
+        ShowFavoriteNumbers = !ShowFavoriteNumbers;
+    }
+
+    // Get either all saved numbers or only the ones marked as favorite
+    private List<NumberValidationData> FavoriteList()
+    {
+        return ShowFavoriteNumbers
+            ? GlobalService.ListOfFavorites.ToList() // Only favorite numbers
+            : GlobalService.SavedNumbers.ToList();   // Saved numbers
     }
 }

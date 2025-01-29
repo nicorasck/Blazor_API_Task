@@ -1,0 +1,41 @@
+<div class="card">
+    <div class="card-header">
+        @FavoriteNumber.number<i class="bi bi-hand-thumbs-up-fill" @onclick="ToggleFavorite"></i>
+    </div>
+
+    <div class="card-body">
+        <blockquote class="blockquote mb-0">
+            <ul class="list-unstyled">
+                <li><b>Valid:</b> @FavoriteNumber.valid</li>
+                <li><b>International Format:</b> @FavoriteNumber.international_format</li>
+                <li><b>Country Prefix:</b> @FavoriteNumber.country_prefix</li>
+                <li><b>Country Code:</b> @FavoriteNumber.country_code</li>
+                <li><b>Country Name:</b> @FavoriteNumber.country_name</li>
+                <li><b>Carrier:</b> @FavoriteNumber.carrier</li>
+                <li><b>Line Type:</b> @FavoriteNumber.line_type</li>
+            </ul>
+
+            @if (FavoriteNumber.IsFavorite) //Showing different icons depending on the status of favorites
+            {
+                <i class="bi bi-arrow-through-heart-fill" alt="heart icon"></i> <span>Favorite</span>
+            }
+            else
+            {
+                <i class="bi bi-ban" alt="none icon"></i> <span>Not Favorite</span>
+            }
+        </blockquote>
+    </div>
+</div>
+
+@code {
+    [CascadingParameter] 
+    public NumberValidationData? FavoriteNumber { get; set; }
+
+    [Parameter]
+    public EventCallback OnFavoriteToggle { get; set; }
+
+    private async Task ToggleFavorite()
+    {
+        await OnFavoriteToggle.InvokeAsync();
+    }
+}
