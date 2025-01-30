@@ -1,6 +1,4 @@
 @inject GlobalService GlobalService
-@* @inject ChildComponent ChildComponent *@
-
 @* Nico Pico, DO NOT forget to pressent the list of Favorites 'ListOfFavorites'!!! 
 Also testing a child component 'ChildComponent'
 *@
@@ -8,6 +6,7 @@ Also testing a child component 'ChildComponent'
 <div class="home-page">
 
     <div class="history-card">
+        <!-- If there are any saved numbers -->
         @if (GlobalService.SavedNumbers != null && GlobalService.SavedNumbers.Any())
         {
             <h3 style="text-align: center; margin-top: 20px;">Number History</h3>
@@ -47,35 +46,36 @@ Also testing a child component 'ChildComponent'
         }
         else
         {
-            <div style="text-align: center; margin-top: 20px;">
+            <div style="text-align: center; margin-top: 20px; margin: 10px;">
                 <h4>No saved searches yet.</h4>
                 <p>Please validate and save a number to see it listed here.</p>
             </div>
         }
     </div>
 
-<button class="btn btn-info" @onclick="ToggleFavoriteNumbers" style="margin: 20px;">Click here to Toggle favorite number</button>
-@if(ShowFavoriteNumbers)
-{
-    foreach (var number in GlobalService.ListOfFavorites)
+    <button class="btn btn-info" @onclick="ToggleFavoriteNumbers" style="margin: 20px;">List of added favorites</button>
+    @if(ShowFavoriteNumbers)
     {
-        if(number.IsFavorite)
+        // looping through the list of favorites and then presenting them via the child component with help from cascading value.
+        foreach (var number in GlobalService.ListOfFavorites)
         {
             <CascadingValue Value="number">
-                <ChildComponent OnFavoriteToggle="StateHasChanged"/>
+                <ChildComponent OnFavoriteToggle="StateHasChanged" />
             </CascadingValue>
         }
-
     }
-}
-
+    else 
+    {
+        <h3 style="text-align: center; margin-top: 20px;">No numbers have been saved!</h3>
+    }
 
 </div>
 
 @code {
-    private void ToggleFavorite(NumberValidationData number)
+
+    private bool ShowFavoriteNumbers = false;
+    private void ToggleFavorite(NumberValidationData number) // Function to toggle favorites
     {
-        // Bringing the functions from GlobalService via @injection
         if (GlobalService.IsFavorite(number))
         {
             GlobalService.RemoveFavoriteNumber(number);
@@ -84,24 +84,11 @@ Also testing a child component 'ChildComponent'
         {
             GlobalService.AddFavoriteNumber(number);
         }
-        StateHasChanged(); // Refreshing the website
+        StateHasChanged(); // updating UI (website) to show the changes
     }
-}
 
-@code {
-    private bool ShowFavoriteNumbers = false;
-
-    // Toggle between showing favorite numbers or all saved numbers
     private void ToggleFavoriteNumbers()
     {
         ShowFavoriteNumbers = !ShowFavoriteNumbers;
-    }
-
-    // Get either all saved numbers or only the ones marked as favorite
-    private List<NumberValidationData> FavoriteList()
-    {
-        return ShowFavoriteNumbers
-            ? GlobalService.ListOfFavorites.ToList() // Only favorite numbers
-            : GlobalService.SavedNumbers.ToList();   // Saved numbers
     }
 }

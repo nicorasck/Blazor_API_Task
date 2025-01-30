@@ -1,11 +1,10 @@
 <div class="card">
     <div class="card-header">
-        @FavoriteNumber.number<i class="bi bi-hand-thumbs-up-fill" @onclick="ToggleFavorite"></i>
+        @FavoriteNumber.number <i class="bi bi-hand-thumbs-up-fill" @onclick="ToggleFavorite"></i>
     </div>
-
     <div class="card-body">
         <blockquote class="blockquote mb-0">
-            <ul class="list-unstyled">
+            <ul class="list-unstyled" style="font-size: small;">
                 <li><b>Valid:</b> @FavoriteNumber.valid</li>
                 <li><b>International Format:</b> @FavoriteNumber.international_format</li>
                 <li><b>Country Prefix:</b> @FavoriteNumber.country_prefix</li>
@@ -15,20 +14,20 @@
                 <li><b>Line Type:</b> @FavoriteNumber.line_type</li>
             </ul>
 
-            @if (FavoriteNumber.IsFavorite) //Showing different icons depending on the status of favorites
+            @if (FavoriteNumber.IsFavorite)
             {
-                <i class="bi bi-arrow-through-heart-fill" alt="heart icon"></i> <span>Favorite</span>
+                <button><i class="bi bi-arrow-through-heart-fill" alt="heart icon"></i> <span>Favorite</span></button>
             }
-            else
+            @* else
             {
                 <i class="bi bi-ban" alt="none icon"></i> <span>Not Favorite</span>
-            }
+            } *@
         </blockquote>
     </div>
 </div>
 
 @code {
-    [CascadingParameter] 
+    [CascadingParameter] // needs to receive data from the parent component
     public NumberValidationData? FavoriteNumber { get; set; }
 
     [Parameter]
@@ -36,6 +35,7 @@
 
     private async Task ToggleFavorite()
     {
-        await OnFavoriteToggle.InvokeAsync();
+        FavoriteNumber.IsFavorite = !FavoriteNumber.IsFavorite;
+        await OnFavoriteToggle.InvokeAsync(); // to notify the parent component it has been changes => update the UI (website)
     }
 }
