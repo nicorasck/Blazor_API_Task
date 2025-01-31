@@ -9,7 +9,7 @@ Also testing a child component 'ChildComponent'
         <!-- If there are any saved numbers -->
         @if (GlobalService.SavedNumbers != null && GlobalService.SavedNumbers.Any())
         {
-            <h3 style="text-align: center; margin-top: 20px;">Number History</h3>
+            <h3 style="text-align: center; padding-top: 20px;">Number History</h3>
             @foreach (var number in GlobalService.SavedNumbers)
             {
                 <div class="card text-center my-3">
@@ -46,7 +46,7 @@ Also testing a child component 'ChildComponent'
         }
         else
         {
-            <div style="text-align: center; margin-top: 20px; margin: 10px;">
+            <div style="text-align: center; margin-bottom: 10px; padding-top: 20px;">
                 <h4>No saved searches yet.</h4>
                 <p>Please validate and save a number to see it listed here.</p>
             </div>
