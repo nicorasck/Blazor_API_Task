@@ -1,3 +1,4 @@
+using Blazor_API_Task;
 using Blazor_API_Task.Models;
 
 // public class GlobalService
@@ -77,3 +78,7 @@ public class GlobalService
 }
 #endregion
 
+public class ExchangeService
+{   // To store rates fetched from the API
+    public List<ExchangesRates> Currencies { get; set; } = new();
+}

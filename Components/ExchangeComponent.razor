@@ -1,0 +1,77 @@
+@inject ExchangeService ExchangeService
+@inject ExchangeratesApiKeyService ExchangeratesApiKeyService
+@inject HttpClient Http
+
+<h3 style="text-align: center; padding-top: 20px;">Exchange Rates</h3>
+
+@if (exchangeRates == null && string.IsNullOrWhiteSpace(errorMessage))
+{
+    <div style="text-align: center;">
+        <p>Still no data.</p>
+    </div>
+}
+else if (exchangeRates != null)
+{
+    <div class="card text-center">
+        <div class="card-header">
+            <h5 style="font-weight: bold;">Based on @exchangeRates.BaseCurrency</h5> 
+        </div>
+        <div class="card-body">
+            <ul class="card-list" style="list-style-type: none;">
+                @foreach (var rate in exchangeRates.Rates)
+                {
+                    <li><b>@rate.Key:</b> @rate.Value</li> 
+                }
+            </ul>
+        </div>
+        <div class="card-footer text-body-secondary">
+            Searched at: @exchangeRates.Date 
+        </div>
+    </div>
+}
+
+@code {
+    public ExchangesRates? exchangeRates;
+    public string? errorMessage;
+
+        // Fetch exchange rates when the component initializes
+    protected override async Task OnInitializedAsync()
+    {
+        await ExchangeRatesData();
+    }
+
+    // Method to fetch exchange rate data from API
+    public async Task ExchangeRatesData()
+    {
+        exchangeRates = null;
+        errorMessage = null;
+
+        // Retrieve API key from a service
+        string apiKey = ExchangeratesApiKeyService.GetApiKey();
+
+        // Construct API URL with key
+        string url = $"https://api.exchangeratesapi.io/v1/latest?access_key={apiKey}&format=1";
+
+        try
+        {
+            // Fetch JSON data and deserialize into ExchangesRates object
+            exchangeRates = await Http.GetFromJsonAsync<ExchangesRates>(url);
+
+            // If data was fetched successfully, update the ExchangeService
+            if (exchangeRates?.Rates != null)
+            {   // This piece was from ChatGPT, sorry!
+                ExchangeService.Currencies = exchangeRates.Rates
+                    .Select(rate => new ExchangesRates { BaseCurrency = rate.Key }) // Convert dictionary to list
+                    .ToList();
+            }
+        }
+        catch (HttpRequestException ex)
+        {
+            errorMessage = $"API Request Failed: {ex.Message}"; // Handles HTTP request failures
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"An unexpected error occurred: {ex.Message}"; // Handles any other errors
+        }
+    }
+}

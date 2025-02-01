@@ -21,7 +21,10 @@ public class Program
         // Singleton is creating an instance from a class.
         builder.Services.AddSingleton(new NumberValidationApiService(NumberValidationApiKey)); // A global service
 
+        // builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://api.exchangeratesapi.io") });
         var ExchangeratesApiKey = builder.Configuration["ExchangeratesApiKey"];
+        builder.Services.AddSingleton<ExchangeService>();
+        builder.Services.AddSingleton(new ExchangeratesApiKeyService(ExchangeratesApiKey));
 
         await builder.Build().RunAsync();
     }

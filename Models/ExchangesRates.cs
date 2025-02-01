@@ -1,17 +1,24 @@
+using System.Text.Json.Serialization;
+
 namespace Blazor_API_Task;
 
-public class Exchangesrates
+public class ExchangesRates
 {
-    public bool Success {get; set;}
-    public int Timestamp {get; set;}
-    public string Base {get; set;}
-    public string Date {get; set;} //in the example on https://exchangeratesapi.io/ it says that Date should be in the type string.
-    public Dictionary<string, decimal> Rates {get; set;}
+    [JsonPropertyName("success")]
+    public bool Success { get; set; }
 
-    /*
-        This solution is common when it comes to API where you need the 'same' format on the variables.
-    [JsonPropertyName("rates")] {get; set;}
+    [JsonPropertyName("timestamp")]
+    public int Timestamp { get; set; }
 
-        And then you can create a separate class with rates.
-    */
+    [JsonPropertyName("base")]
+    public string BaseCurrency { get; set; } // Renamed from 'Base' to 'BaseCurrency'
+
+    [JsonPropertyName("date")]
+    public string Date { get; set; }
+
+    [JsonPropertyName("rates")]
+    public Dictionary<string, double> Rates { get; set; } = new();
+    //Using a Dictionary<string, double> is more flexible.
+    //Instead of manually defining USD, EUR, GBP, etc., you can just loop through Rates dynamically.
+    //This ensures your model works even if the API adds or removes currencies.
 }
